@@ -6,10 +6,13 @@
     <description><![CDATA[
       Language support for the <b>Yar</b> programming language.
       <ul>
-        <li>Syntax highlighting</li>
+        <li>Syntax and semantic highlighting</li>
         <li>Code parsing and error recovery</li>
         <li>Brace matching</li>
         <li>Line commenting</li>
+        <li>Code folding</li>
+        <li>Structure view</li>
+        <li>Configurable color scheme</li>
       </ul>
     ]]></description>
 
@@ -39,5 +42,20 @@
         <!-- Commenter -->
         <lang.commenter language="Yar"
                         implementationClass="dev.yarlson.yar.editor.YarCommenter"/>
+
+        <!-- Color Settings Page -->
+        <colorSettingsPage implementation="dev.yarlson.yar.highlighting.YarColorSettingsPage"/>
+
+        <!-- Code Folding -->
+        <lang.foldingBuilder language="Yar"
+                             implementationClass="dev.yarlson.yar.editor.YarFoldingBuilder"/>
+
+        <!-- Structure View -->
+        <lang.psiStructureViewFactory language="Yar"
+                                      implementationClass="dev.yarlson.yar.structure.YarStructureViewFactory"/>
+
+        <!-- Semantic Annotator -->
+        <annotator language="Yar"
+                   implementationClass="dev.yarlson.yar.highlighting.YarAnnotator"/>
     </extensions>
 </idea-plugin>
