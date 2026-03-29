@@ -1,0 +1,43 @@
+<idea-plugin>
+    <id>dev.yarlson.yar</id>
+    <name>Yar</name>
+    <vendor url="https://yarlson.dev">yarlson.dev</vendor>
+
+    <description><![CDATA[
+      Language support for the <b>Yar</b> programming language.
+      <ul>
+        <li>Syntax highlighting</li>
+        <li>Code parsing and error recovery</li>
+        <li>Brace matching</li>
+        <li>Line commenting</li>
+      </ul>
+    ]]></description>
+
+    <depends>com.intellij.modules.platform</depends>
+    <depends>com.intellij.modules.lang</depends>
+
+    <extensions defaultExtensionNs="com.intellij">
+        <!-- File Type -->
+        <fileType name="Yar"
+                  implementationClass="dev.yarlson.yar.YarFileType"
+                  fieldName="INSTANCE"
+                  language="Yar"
+                  extensions="yar"/>
+
+        <!-- Parser -->
+        <lang.parserDefinition language="Yar"
+                               implementationClass="dev.yarlson.yar.parser.YarParserDefinition"/>
+
+        <!-- Syntax Highlighting -->
+        <lang.syntaxHighlighterFactory language="Yar"
+                                       implementationClass="dev.yarlson.yar.highlighting.YarSyntaxHighlighterFactory"/>
+
+        <!-- Brace Matching -->
+        <lang.braceMatcher language="Yar"
+                           implementationClass="dev.yarlson.yar.editor.YarBraceMatcher"/>
+
+        <!-- Commenter -->
+        <lang.commenter language="Yar"
+                        implementationClass="dev.yarlson.yar.editor.YarCommenter"/>
+    </extensions>
+</idea-plugin>

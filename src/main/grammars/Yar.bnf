@@ -1,0 +1,335 @@
+{
+  parserClass="dev.yarlson.yar.parser.YarParser"
+
+  extends="com.intellij.extapi.psi.ASTWrapperPsiElement"
+
+  psiClassPrefix="Yar"
+  psiImplClassSuffix="Impl"
+  psiPackage="dev.yarlson.yar.psi"
+  psiImplPackage="dev.yarlson.yar.psi.impl"
+
+  elementTypeHolderClass="dev.yarlson.yar.psi.YarTypes"
+  elementTypeClass="dev.yarlson.yar.psi.YarElementType"
+  tokenTypeClass="dev.yarlson.yar.psi.YarTokenType"
+
+  tokens=[
+    // Keywords
+    PACKAGE_KW='package'
+    IMPORT_KW='import'
+    FN_KW='fn'
+    PUB_KW='pub'
+    VAR_KW='var'
+    LET_KW='let'
+    STRUCT_KW='struct'
+    INTERFACE_KW='interface'
+    ENUM_KW='enum'
+    OR_KW='or'
+    IF_KW='if'
+    ELSE_KW='else'
+    FOR_KW='for'
+    BREAK_KW='break'
+    CONTINUE_KW='continue'
+    RETURN_KW='return'
+    MATCH_KW='match'
+    CASE_KW='case'
+    TRUE_KW='true'
+    FALSE_KW='false'
+    NIL_KW='nil'
+    ERROR_KW='error'
+    MAP_KW='map'
+
+    // Multi-character operators
+    COLON_ASSIGN=':='
+    EQ_EQ='=='
+    BANG_EQ='!='
+    LT_EQ='<='
+    GT_EQ='>='
+    AMP_AMP='&&'
+    PIPE_PIPE='||'
+
+    // Single-character operators and delimiters
+    EQ='='
+    COLON=':'
+    SEMICOLON=';'
+    BANG='!'
+    QUESTION='?'
+    COMMA=','
+    DOT='.'
+    AMP='&'
+    PIPE='|'
+    PLUS='+'
+    MINUS='-'
+    STAR='*'
+    SLASH='/'
+    PERCENT='%'
+    LT='<'
+    GT='>'
+    LPAREN='('
+    RPAREN=')'
+    LBRACE='{'
+    RBRACE='}'
+    LBRACKET='['
+    RBRACKET=']'
+
+    // Literals and identifiers
+    INTEGER_LITERAL='regexp:[0-9]+'
+    STRING_LITERAL='regexp:"([^"\\\r\n]|\\[nt\\"])*"'
+    IDENTIFIER='regexp:[a-zA-Z_][a-zA-Z0-9_]*'
+    LINE_COMMENT='regexp://[^\r\n]*'
+  ]
+}
+
+// ============================================================
+// Top-level structure
+// ============================================================
+
+yarFile ::= packageDecl importDecl* topLevelDecl* {pin=1}
+
+packageDecl ::= 'package' IDENTIFIER {pin=1}
+
+importDecl ::= 'import' STRING_LITERAL {pin=1}
+
+private topLevelDecl ::= structDecl
+                        | interfaceDecl
+                        | enumDecl
+                        | functionDecl
+                        {recoverWhile=topLevelRecover}
+
+private topLevelRecover ::= !('pub' | 'struct' | 'interface' | 'enum' | 'fn' | <<eof>>)
+
+// ============================================================
+// Declarations
+// ============================================================
+
+structDecl ::= pubModifier? 'struct' IDENTIFIER typeParamList? '{' structBody '}' {pin=2}
+
+private structBody ::= structField*
+
+structField ::= IDENTIFIER typeExpr
+
+interfaceDecl ::= pubModifier? 'interface' IDENTIFIER '{' interfaceBody '}' {pin=2}
+
+private interfaceBody ::= interfaceMethod*
+
+interfaceMethod ::= IDENTIFIER '(' paramList? ')' errorableMarker? typeExpr {pin=1}
+
+enumDecl ::= pubModifier? 'enum' IDENTIFIER '{' enumBody '}' {pin=2}
+
+private enumBody ::= enumCase*
+
+enumCase ::= IDENTIFIER enumCaseFields? {pin=1}
+
+enumCaseFields ::= '{' structField* '}'
+
+functionDecl ::= pubModifier? 'fn' receiver? IDENTIFIER typeParamList?
+                 '(' paramList? ')' errorableMarker? typeExpr block {pin=2}
+
+receiver ::= '(' IDENTIFIER typeExpr ')' {pin=1}
+
+pubModifier ::= 'pub'
+
+// ============================================================
+// Type parameters and parameters
+// ============================================================
+
+typeParamList ::= '[' typeParam (',' typeParam)* ']' {pin=1}
+
+typeParam ::= IDENTIFIER
+
+paramList ::= param (',' param)*
+
+param ::= IDENTIFIER typeExpr
+
+// ============================================================
+// Types
+// ============================================================
+
+typeExpr ::= errorableType
+           | pointerType
+           | arrayType
+           | sliceType
+           | mapType
+           | functionType
+           | namedType
+
+errorableType ::= '!' typeExpr {pin=1}
+
+pointerType ::= '*' typeExpr {pin=1}
+
+arrayType ::= '[' INTEGER_LITERAL ']' typeExpr {pin=1}
+
+sliceType ::= '[' ']' typeExpr
+
+mapType ::= 'map' '[' typeExpr ']' typeExpr {pin=1}
+
+functionType ::= 'fn' '(' typeList? ')' errorableMarker? typeExpr {pin=1}
+
+private typeList ::= typeExpr (',' typeExpr)*
+
+namedType ::= qualifiedName typeArgList?
+
+typeArgList ::= '[' typeExpr (',' typeExpr)* ']'
+
+errorableMarker ::= '!'
+
+// ============================================================
+// Statements
+// ============================================================
+
+block ::= '{' statement* '}' {pin=1}
+
+statement ::= varDeclStmt
+            | shortDeclStmt
+            | ifStmt
+            | forStmt
+            | breakStmt
+            | continueStmt
+            | returnStmt
+            | matchStmt
+            | assignOrExprStmt
+            {recoverWhile=stmtRecover}
+
+private stmtRecover ::= !('}' | 'var' | 'if' | 'for' | 'break' | 'continue' | 'return'
+                         | 'match' | IDENTIFIER | INTEGER_LITERAL | STRING_LITERAL
+                         | 'true' | 'false' | 'nil' | 'error' | 'fn' | '(' | '!' | '-'
+                         | '*' | '&' | '[' | 'map' | 'pub' | 'struct' | 'interface' | 'enum'
+                         | <<eof>>)
+
+varDeclStmt ::= 'var' IDENTIFIER typeExpr ('=' expression)? {pin=1}
+
+shortDeclStmt ::= IDENTIFIER ':=' expression {pin=2}
+
+ifStmt ::= 'if' expression block elseClause? {pin=1}
+
+elseClause ::= 'else' (ifStmt | block) {pin=1}
+
+forStmt ::= 'for' forClause? block {pin=1}
+
+forClause ::= forCStyleClause | expression
+
+private forCStyleClause ::= forInit ';' expression ';' forPost
+
+forInit ::= varDeclStmt | shortDeclStmt | assignOrExprStmt
+
+forPost ::= assignOrExprStmt
+
+breakStmt ::= 'break' {pin=1}
+
+continueStmt ::= 'continue' {pin=1}
+
+returnStmt ::= 'return' expression? {pin=1}
+
+matchStmt ::= 'match' expression '{' matchArm* '}' {pin=1}
+
+matchArm ::= 'case' qualifiedName ('(' IDENTIFIER ')')? block {pin=1}
+
+// Assignment or expression statement — disambiguated after parsing the LHS
+assignOrExprStmt ::= expression ('=' expression)?
+
+// ============================================================
+// Expressions (precedence via nesting, lowest to highest)
+// ============================================================
+
+expression ::= handleExpr
+
+handleExpr ::= logicalOrExpr handleSuffix?
+
+handleSuffix ::= 'or' '|' IDENTIFIER '|' block {pin=1}
+
+logicalOrExpr ::= logicalAndExpr ('||' logicalAndExpr)*
+
+logicalAndExpr ::= equalityExpr ('&&' equalityExpr)*
+
+equalityExpr ::= comparisonExpr (equalityOp comparisonExpr)*
+
+private equalityOp ::= '==' | '!='
+
+comparisonExpr ::= additiveExpr (comparisonOp additiveExpr)*
+
+private comparisonOp ::= '<' | '<=' | '>' | '>='
+
+additiveExpr ::= multiplicativeExpr (additiveOp multiplicativeExpr)*
+
+private additiveOp ::= '+' | '-'
+
+multiplicativeExpr ::= unaryExpr (multiplicativeOp unaryExpr)*
+
+private multiplicativeOp ::= '*' | '/' | '%'
+
+unaryExpr ::= unaryOp unaryExpr | postfixExpr
+
+private unaryOp ::= '!' | '-' | '*' | '&'
+
+postfixExpr ::= primaryExpr postfixOp*
+
+private postfixOp ::= callArgs
+                     | dotAccess
+                     | indexOrSlice
+                     | propagateOp
+                     | structLiteralBody
+
+callArgs ::= '(' argList? ')' {pin=1}
+
+private argList ::= expression (',' expression)*
+
+dotAccess ::= '.' IDENTIFIER {pin=1}
+
+indexOrSlice ::= '[' expression (':' expression)? ']' {pin=1}
+
+propagateOp ::= '?'
+
+structLiteralBody ::= '{' fieldInitList? '}' {pin=1}
+
+private fieldInitList ::= fieldInit (',' fieldInit)* ','?
+
+fieldInit ::= IDENTIFIER ':' expression {pin=2}
+
+// ============================================================
+// Primary expressions
+// ============================================================
+
+primaryExpr ::= groupExpr
+              | functionLiteralExpr
+              | arrayLiteralExpr
+              | sliceLiteralExpr
+              | mapLiteralExpr
+              | errorLiteralExpr
+              | boolLiteralExpr
+              | nilLiteralExpr
+              | intLiteralExpr
+              | stringLiteralExpr
+              | identExpr
+
+groupExpr ::= '(' expression ')' {pin=1}
+
+functionLiteralExpr ::= 'fn' '(' paramList? ')' errorableMarker? typeExpr block {pin=1}
+
+arrayLiteralExpr ::= '[' INTEGER_LITERAL ']' typeExpr '{' expressionList? '}' {pin=1}
+
+sliceLiteralExpr ::= '[' ']' typeExpr '{' expressionList? '}'
+
+mapLiteralExpr ::= 'map' '[' typeExpr ']' typeExpr '{' mapEntryList? '}' {pin=1}
+
+private expressionList ::= expression (',' expression)* ','?
+
+private mapEntryList ::= mapEntry (',' mapEntry)* ','?
+
+mapEntry ::= expression ':' expression {pin=2}
+
+errorLiteralExpr ::= 'error' '.' IDENTIFIER {pin=1}
+
+boolLiteralExpr ::= 'true' | 'false'
+
+nilLiteralExpr ::= 'nil'
+
+intLiteralExpr ::= INTEGER_LITERAL
+
+stringLiteralExpr ::= STRING_LITERAL
+
+identExpr ::= IDENTIFIER
+
+// ============================================================
+// Helpers
+// ============================================================
+
+qualifiedName ::= IDENTIFIER ('.' IDENTIFIER)*
