@@ -101,28 +101,55 @@ private topLevelRecover ::= !('pub' | 'struct' | 'interface' | 'enum' | 'fn' | <
 // Declarations
 // ============================================================
 
-structDecl ::= pubModifier? 'struct' IDENTIFIER typeParamList? '{' structBody '}' {pin=2}
+structDecl ::= pubModifier? 'struct' IDENTIFIER typeParamList? '{' structBody '}' {
+  pin=2
+  mixin="dev.yarlson.yar.psi.YarNamedElementImpl"
+  implements="dev.yarlson.yar.psi.YarNamedElement"
+}
 
 private structBody ::= structField*
 
-structField ::= IDENTIFIER typeExpr
+structField ::= IDENTIFIER typeExpr {
+  mixin="dev.yarlson.yar.psi.YarNamedElementImpl"
+  implements="dev.yarlson.yar.psi.YarNamedElement"
+}
 
-interfaceDecl ::= pubModifier? 'interface' IDENTIFIER '{' interfaceBody '}' {pin=2}
+interfaceDecl ::= pubModifier? 'interface' IDENTIFIER '{' interfaceBody '}' {
+  pin=2
+  mixin="dev.yarlson.yar.psi.YarNamedElementImpl"
+  implements="dev.yarlson.yar.psi.YarNamedElement"
+}
 
 private interfaceBody ::= interfaceMethod*
 
-interfaceMethod ::= IDENTIFIER '(' paramList? ')' errorableMarker? typeExpr {pin=1}
+interfaceMethod ::= IDENTIFIER '(' paramList? ')' errorableMarker? typeExpr {
+  pin=1
+  mixin="dev.yarlson.yar.psi.YarNamedElementImpl"
+  implements="dev.yarlson.yar.psi.YarNamedElement"
+}
 
-enumDecl ::= pubModifier? 'enum' IDENTIFIER '{' enumBody '}' {pin=2}
+enumDecl ::= pubModifier? 'enum' IDENTIFIER '{' enumBody '}' {
+  pin=2
+  mixin="dev.yarlson.yar.psi.YarNamedElementImpl"
+  implements="dev.yarlson.yar.psi.YarNamedElement"
+}
 
 private enumBody ::= enumCase*
 
-enumCase ::= IDENTIFIER enumCaseFields? {pin=1}
+enumCase ::= IDENTIFIER enumCaseFields? {
+  pin=1
+  mixin="dev.yarlson.yar.psi.YarNamedElementImpl"
+  implements="dev.yarlson.yar.psi.YarNamedElement"
+}
 
 enumCaseFields ::= '{' structField* '}'
 
 functionDecl ::= pubModifier? 'fn' receiver? IDENTIFIER typeParamList?
-                 '(' paramList? ')' errorableMarker? typeExpr block {pin=2}
+                 '(' paramList? ')' errorableMarker? typeExpr block {
+  pin=2
+  mixin="dev.yarlson.yar.psi.YarNamedElementImpl"
+  implements="dev.yarlson.yar.psi.YarNamedElement"
+}
 
 receiver ::= '(' IDENTIFIER typeExpr ')' {pin=1}
 
@@ -138,7 +165,10 @@ typeParam ::= IDENTIFIER
 
 paramList ::= param (',' param)*
 
-param ::= IDENTIFIER typeExpr
+param ::= IDENTIFIER typeExpr {
+  mixin="dev.yarlson.yar.psi.YarNamedElementImpl"
+  implements="dev.yarlson.yar.psi.YarNamedElement"
+}
 
 // ============================================================
 // Types
@@ -195,9 +225,17 @@ private stmtRecover ::= !('}' | 'var' | 'if' | 'for' | 'break' | 'continue' | 'r
                          | '*' | '&' | '[' | 'map' | 'pub' | 'struct' | 'interface' | 'enum'
                          | <<eof>>)
 
-varDeclStmt ::= 'var' IDENTIFIER typeExpr ('=' expression)? {pin=1}
+varDeclStmt ::= 'var' IDENTIFIER typeExpr ('=' expression)? {
+  pin=1
+  mixin="dev.yarlson.yar.psi.YarNamedElementImpl"
+  implements="dev.yarlson.yar.psi.YarNamedElement"
+}
 
-shortDeclStmt ::= IDENTIFIER ':=' expression {pin=2}
+shortDeclStmt ::= IDENTIFIER ':=' expression {
+  pin=2
+  mixin="dev.yarlson.yar.psi.YarNamedElementImpl"
+  implements="dev.yarlson.yar.psi.YarNamedElement"
+}
 
 ifStmt ::= 'if' expression block elseClause? {pin=1}
 
