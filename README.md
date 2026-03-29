@@ -30,17 +30,18 @@ IntelliJ IDEA language support plugin for the [Yar](https://yarlson.dev) program
 - Code completion for keywords, builtin types/functions, stdlib packages, and local symbols
 - Quick documentation for builtins, stdlib packages, and all declarations (`F1` / `Ctrl+Q`)
 
-### External Integration (planned)
+### External Integration
 
 - External annotator using `yar check` for real compiler diagnostics
 - Run configurations for `yar run` and `yar build`
 - Gutter run icons for `fn main()`
+- Auto-detection of `yar` executable from PATH, common locations, or `YAR_PATH` env var
 
 ## Requirements
 
 - IntelliJ IDEA 2024.3+ (build 243+)
 - JDK 21+
-- [Yar compiler](https://yarlson.dev) (for run configs and external diagnostics)
+- [Yar compiler](https://github.com/yarlson/yar) (for run configs and external diagnostics)
 
 ## Installation
 

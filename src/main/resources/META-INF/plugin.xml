@@ -85,5 +85,15 @@
         <!-- Formatting -->
         <lang.formatter language="Yar"
                         implementationClass="dev.yarlson.yar.formatter.YarFormattingModelBuilder"/>
+
+        <!-- External Annotator -->
+        <externalAnnotator language="Yar"
+                           implementationClass="dev.yarlson.yar.external.YarExternalAnnotator"/>
+
+        <!-- Run Configuration -->
+        <configurationType implementation="dev.yarlson.yar.run.YarRunConfigurationType"/>
+        <runConfigurationProducer implementation="dev.yarlson.yar.run.YarRunConfigurationProducer"/>
+        <runLineMarkerContributor language="Yar"
+                                  implementationClass="dev.yarlson.yar.run.YarRunLineMarkerProvider"/>
     </extensions>
 </idea-plugin>
