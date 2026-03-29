@@ -14,7 +14,7 @@ Key architectural layers:
 - **Lexer/Parser** -- `YarLexerAdapter` wraps the generated JFlex lexer. `YarParserDefinition` wires the generated parser into the platform.
 - **Highlighting** -- Token-level syntax highlighting via `YarSyntaxHighlighter`. Semantic highlighting via `YarAnnotator` (types, functions, parameters, fields, enum cases, pub modifier, call targets). `YarColorSettingsPage` exposes configurable color settings.
 - **Editor features** -- Brace matching, line/block commenting, code folding, quote auto-closing, spellchecking in comments/strings, TODO indexing, and live templates.
-- **Navigation** -- Go to symbol (`YarGoToSymbolContributor`), find usages (`YarFindUsagesProvider`), PSI-based reference resolution (`YarReference`) with local and file scope.
+- **Navigation** -- Go to symbol (`YarGoToSymbolContributor`), find usages (`YarFindUsagesProvider`), PSI-based reference resolution (`YarReference`) with local, file, and cross-package scope.
 - **Code intelligence** -- Keyword, builtin, and local symbol completion. Documentation provider for hover info. Rename refactoring via `YarNamedElement` / `PsiNameIdentifierOwner`.
 - **Formatting** -- `YarFormattingModelBuilder` with spacing rules for operators, keywords, braces, and delimiters. `YarBlock` handles indentation within braces.
 - **Structure view** -- Tree-based structure view showing top-level and nested declarations.
@@ -47,6 +47,7 @@ Key architectural layers:
 - Live templates
 - Structure view
 - Go to definition, find usages, go to symbol
+- Cross-package go-to-definition for qualified names, struct literals, and dot-accessed symbols
 - Rename refactoring (symbol rename across file)
 - Keyword, builtin type/function, and local symbol completion
 - Stdlib package name completion for imports
@@ -58,7 +59,7 @@ Key architectural layers:
 
 ## Tech Stack
 
-- Kotlin 2.1.10 (JVM target 21)
+- Kotlin 2.1.10 (JVM target 21, JDK 25 toolchain)
 - IntelliJ Platform SDK (Community 2024.3.1.1, sinceBuild 243)
 - IntelliJ Platform Gradle Plugin 2.13.1
 - Grammar-Kit 2023.3.0.3 (BNF parser generator)

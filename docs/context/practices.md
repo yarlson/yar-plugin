@@ -8,14 +8,19 @@
 
 ## PSI and References
 
-- Reference resolution is file-scoped: `YarReference` resolves identifiers first in local scope (walking up through blocks, functions, for-loops, match arms, closures, error handlers) then at file-level top-level declarations.
-- References are created only for identifier tokens that are not declaration names, not inside package declarations, and not dot-accessed field names.
-- Top-level declarations (functions, structs, interfaces, enums) serve as file-scope resolution targets.
+- Reference resolution follows a three-tier chain: local scope (walking up through blocks, functions, for-loops, match arms, closures, error handlers), file-level top-level declarations, then cross-package resolution via imported packages.
+- Cross-package resolution matches the import's package name against `package` declarations in all project `.yar` files, then resolves the symbol within matching files.
+- References are provided through two mechanisms: PSI mixins (`YarIdentExprMixin`, `YarDotAccessMixin`, `YarStructLiteralExprMixin`, `YarNamedTypeMixin`) that override `getReference()` on composite elements, and `YarReferenceContributor` that creates references for leaf `IDENTIFIER` tokens.
+- References are not created for declaration names themselves, identifiers in package declarations, or field names in struct literal field initializers.
+- Dot-accessed identifiers and non-first identifiers in qualified names only get references when they represent cross-package access (the prefix matches an imported package name).
+- Top-level declarations (functions, structs, interfaces, enums) serve as resolution targets at both file and package scope.
 
 ## Highlighting Strategy
 
 - Token-level highlighting (keywords, literals, comments, operators) is handled by `YarSyntaxHighlighter`.
 - Semantic highlighting is layered on top via `YarAnnotator`, which annotates type names, function names, function calls, parameters, fields, enum cases, pub modifiers, and error literals.
+- Function call highlighting processes all `CallArgs` children in a `PostfixExpr`, supporting chained call highlighting (e.g., `a.b().c()`).
+- Qualified type names (e.g., `pkg.Type`) highlight only the last identifier as a type name.
 - All semantic annotations use `HighlightSeverity.INFORMATION` with `TextAttributesKey` mappings to standard IntelliJ defaults.
 
 ## Completion Strategy

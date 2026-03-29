@@ -17,7 +17,8 @@ The plugin's grammar defines the following Yar language constructs. This is the 
 ## Expressions
 
 - Precedence from lowest to highest: handle (`or |err| { ... }`), logical or, logical and, equality, comparison, additive, multiplicative, unary, postfix
-- Postfix operations: function call, dot access, index/slice, error propagation (`?`), struct literal body
+- Postfix operations: function call, dot access, index/slice, error propagation (`?`)
+- Struct literal expressions: `TypeName{ field: value, ... }` and qualified `pkg.TypeName{ field: value, ... }`
 - Primary expressions: grouping, function literals, array/slice/map literals, error literals, bool/nil/int/string literals, identifiers
 
 ## Statements

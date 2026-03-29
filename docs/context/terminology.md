@@ -14,3 +14,6 @@
 - **pub modifier** -- visibility modifier marking a declaration as public
 - **Receiver** -- method receiver parameter syntax `(name Type)` preceding a function name, similar to Go
 - **Qualified name** -- dot-separated identifier path (e.g., `pkg.Type`)
+- **PSI mixin** -- abstract class wired via Grammar-Kit's `mixin` attribute that adds behavior (e.g., `getReference()`) to generated PSI element classes
+- **Cross-package resolution** -- reference resolution that looks up symbols in other `.yar` files by matching import paths to package declarations
+- **Struct literal expression** -- syntax for constructing struct instances: `TypeName{ field: value }` or `pkg.TypeName{ field: value }`
