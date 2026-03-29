@@ -42,13 +42,13 @@ class YarReferenceTest : BasePlatformTestCase() {
             package main
             fn main() i32 {
                 x := 42
-                print_int(x)
+                print(to_str(x))
                 return 0
             }
             """.trimIndent()
         )
         // "x" in the short decl is the name of YarShortDeclStmt, not an identExpr.
-        // The identExpr "x" is in print_int(x) -- first identExpr matching "x".
+        // The identExpr "x" is in print(to_str(x)) -- first identExpr matching "x".
         val identExpr = findIdentExpr("x", skip = 0)!!
         val ref = identExpr.reference
         assertNotNull("x identExpr should have a reference", ref)

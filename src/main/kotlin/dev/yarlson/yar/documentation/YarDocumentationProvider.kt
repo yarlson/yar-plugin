@@ -109,13 +109,13 @@ class YarDocumentationProvider : AbstractDocumentationProvider() {
     companion object {
         private val BUILTIN_DOCS = mapOf(
             "print" to "<pre>fn print(msg str) void</pre><p>Prints a string to stdout.</p>",
-            "print_int" to "<pre>fn print_int(n i32) void</pre><p>Prints an integer to stdout.</p>",
             "panic" to "<pre>fn panic(msg str) noreturn</pre><p>Terminates the program with an error message.</p>",
             "len" to "<pre>fn len(collection) i32</pre><p>Returns the length of an array, slice, map, or string.</p>",
             "append" to "<pre>fn append(slice []T, elem T) []T</pre><p>Appends an element to a slice and returns the new slice.</p>",
             "has" to "<pre>fn has(m map[K]V, key K) bool</pre><p>Returns true if the map contains the given key.</p>",
             "delete" to "<pre>fn delete(m map[K]V, key K) void</pre><p>Removes the entry with the given key from the map.</p>",
             "keys" to "<pre>fn keys(m map[K]V) []K</pre><p>Returns a slice of all keys in the map.</p>",
+            "to_str" to "<pre>fn to_str(value) str</pre><p>Converts i32, i64, bool, str, or error to its string representation.</p>",
             // Stdlib packages
             "strings" to "<pre>package strings</pre><p>String manipulation functions: contains, has_prefix, has_suffix, index, count, repeat, replace, trim_left, trim_right, join, from_byte, parse_i64.</p>",
             "utf8" to "<pre>package utf8</pre><p>UTF-8 decoding and rune classification: decode, width, is_letter, is_digit, is_space.</p>",
@@ -126,6 +126,7 @@ class YarDocumentationProvider : AbstractDocumentationProvider() {
             "process" to "<pre>package process</pre><p>Process execution: args, run, run_inherit.</p>",
             "env" to "<pre>package env</pre><p>Environment variable access: lookup.</p>",
             "stdio" to "<pre>package stdio</pre><p>Stderr output: eprint.</p>",
+            "testing" to "<pre>package testing</pre><p>Test framework: T, equal, not_equal, is_true, is_false, fail.</p>",
             // Builtin types
             "bool" to "<pre>type bool</pre><p>Boolean type. Values: <code>true</code>, <code>false</code>.</p>",
             "i32" to "<pre>type i32</pre><p>32-bit signed integer.</p>",

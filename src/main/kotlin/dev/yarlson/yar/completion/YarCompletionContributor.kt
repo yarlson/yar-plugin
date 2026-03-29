@@ -96,13 +96,13 @@ class YarCompletionContributor : CompletionContributor() {
 
             private val BUILTIN_FUNCTIONS = listOf(
                 "print" to "(str) void",
-                "print_int" to "(i32) void",
                 "panic" to "(str) noreturn",
                 "len" to "(collection) i32",
                 "append" to "([]T, T) []T",
                 "has" to "(map[K]V, K) bool",
                 "delete" to "(map[K]V, K) void",
                 "keys" to "(map[K]V) []K",
+                "to_str" to "(i32 | i64 | bool | str | error) str",
             )
 
             private val STDLIB_PACKAGES = listOf(
@@ -115,6 +115,7 @@ class YarCompletionContributor : CompletionContributor() {
                 "process" to "process execution",
                 "env" to "environment variables",
                 "stdio" to "stderr output",
+                "testing" to "test framework",
             )
         }
     }
