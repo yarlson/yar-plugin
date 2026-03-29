@@ -196,7 +196,9 @@ functionType ::= 'fn' '(' typeList? ')' errorableMarker? typeExpr {pin=1}
 
 private typeList ::= typeExpr (',' typeExpr)*
 
-namedType ::= qualifiedName typeArgList?
+namedType ::= qualifiedName typeArgList? {
+  mixin="dev.yarlson.yar.psi.YarNamedTypeMixin"
+}
 
 typeArgList ::= '[' typeExpr (',' typeExpr)* ']'
 
@@ -309,7 +311,10 @@ callArgs ::= '(' argList? ')' {pin=1}
 
 private argList ::= expression (',' expression)*
 
-dotAccess ::= '.' IDENTIFIER {pin=1}
+dotAccess ::= '.' IDENTIFIER {
+  pin=1
+  mixin="dev.yarlson.yar.psi.YarDotAccessMixin"
+}
 
 indexOrSlice ::= '[' expression (':' expression)? ']' {pin=1}
 
@@ -348,7 +353,9 @@ private mapEntryList ::= mapEntry (',' mapEntry)* ','?
 
 mapEntry ::= expression ':' expression {pin=2}
 
-structLiteralExpr ::= qualifiedName typeArgList? '{' fieldInitList? '}'
+structLiteralExpr ::= qualifiedName typeArgList? '{' fieldInitList? '}' {
+  mixin="dev.yarlson.yar.psi.YarStructLiteralExprMixin"
+}
 
 private fieldInitList ::= fieldInit (',' fieldInit)* ','?
 
@@ -364,7 +371,9 @@ intLiteralExpr ::= INTEGER_LITERAL
 
 stringLiteralExpr ::= STRING_LITERAL
 
-identExpr ::= IDENTIFIER
+identExpr ::= IDENTIFIER {
+  mixin="dev.yarlson.yar.psi.YarIdentExprMixin"
+}
 
 // ============================================================
 // Helpers
