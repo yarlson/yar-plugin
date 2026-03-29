@@ -44,7 +44,7 @@ IntelliJ IDEA language support plugin for the [Yar](https://yarlson.dev) program
 ## Requirements
 
 - IntelliJ IDEA 2024.3+ (build 243+)
-- JDK 21+
+- JDK 25+
 - [Yar compiler](https://github.com/yarlson/yar) (for run configs and external diagnostics)
 
 ## Installation
@@ -54,11 +54,11 @@ IntelliJ IDEA language support plugin for the [Yar](https://yarlson.dev) program
 ```bash
 git clone <repo-url>
 cd yar-plugin
-export JAVA_HOME=/path/to/jdk21+
-./gradlew build
+export JAVA_HOME=/path/to/jdk25+
+./gradlew buildPlugin
 ```
 
-Install from `build/distributions/Yar-*.zip` via Settings > Plugins > Install Plugin from Disk.
+Install from `build/distributions/yar-plugin-*.zip` via Settings > Plugins > Install Plugin from Disk.
 
 ### Development Sandbox
 
@@ -111,15 +111,16 @@ Key language features: structs, interfaces, enums with payloads, generics, metho
 
 ### Build Commands
 
-| Command                                  | Description                                        |
-| ---------------------------------------- | -------------------------------------------------- |
-| `./gradlew build`                        | Full build (generate + compile + package + verify) |
-| `./gradlew generateLexer generateParser` | Regenerate lexer/parser from grammar files         |
-| `./gradlew runIde`                       | Launch sandbox IDE with plugin                     |
-| `./gradlew test`                         | Run tests                                          |
-| `./gradlew verifyPluginStructure`        | Verify plugin structure                            |
-| `./gradlew runPluginVerifier`            | Check binary compatibility with target IDEs        |
-| `./gradlew clean`                        | Clean build artifacts and generated sources        |
+| Command                                  | Description                                 |
+| ---------------------------------------- | ------------------------------------------- |
+| `./gradlew build`                        | Compile, test, and check                    |
+| `./gradlew buildPlugin`                  | Build distributable plugin zip              |
+| `./gradlew generateLexer generateParser` | Regenerate lexer/parser from grammar files  |
+| `./gradlew runIde`                       | Launch sandbox IDE with plugin              |
+| `./gradlew test`                         | Run tests                                   |
+| `./gradlew verifyPluginStructure`        | Verify plugin structure                     |
+| `./gradlew runPluginVerifier`            | Check binary compatibility with target IDEs |
+| `./gradlew clean`                        | Clean build artifacts and generated sources |
 
 ### Project Structure
 
@@ -154,7 +155,7 @@ src/main/
 
 ### Technology Stack
 
-- **Kotlin** + **Java 21** bytecode target
+- **Kotlin** + **JDK 25** (Java 21 bytecode target)
 - **IntelliJ Platform Gradle Plugin** 2.13.1
 - **Grammar-Kit** 2023.3.0.3 (BNF parser generation)
 - **JFlex** (lexer generation)
