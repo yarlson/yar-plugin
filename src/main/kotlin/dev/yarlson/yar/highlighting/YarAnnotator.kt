@@ -27,7 +27,7 @@ class YarAnnotator : Annotator {
             is YarPubModifier -> highlight(element, PUB_MODIFIER, holder)
             is YarNamedType -> highlightNamedType(element, holder)
             is YarDotAccess -> highlightDeclName(element.identifier, FIELD, holder)
-            is YarCallArgs -> highlightCallTarget(element, holder)
+            is YarPostfixExpr -> highlightCallTargets(element, holder)
         }
     }
 
@@ -49,22 +49,21 @@ class YarAnnotator : Annotator {
         highlight(typeName.psi, TYPE_NAME, holder)
     }
 
-    private fun highlightCallTarget(callArgs: YarCallArgs, holder: AnnotationHolder) {
-        // Walk up to postfixExpr, then find what precedes the call args
-        val postfix = callArgs.parent as? YarPostfixExpr ?: return
+    private fun highlightCallTargets(postfix: YarPostfixExpr, holder: AnnotationHolder) {
         val children = postfix.children
-        val callIndex = children.indexOf(callArgs)
-        if (callIndex <= 0) return
-
-        val target = children[callIndex - 1]
-        when (target) {
-            is YarDotAccess -> {
-                val ident = target.identifier ?: return
-                highlight(ident, FUNCTION_CALL, holder)
-            }
-            is YarPrimaryExpr -> {
-                val identExpr = target.identExpr ?: return
-                highlight(identExpr, FUNCTION_CALL, holder)
+        for (i in children.indices) {
+            if (children[i] !is YarCallArgs) continue
+            if (i == 0) continue
+            val target = children[i - 1]
+            when (target) {
+                is YarDotAccess -> {
+                    val ident = target.identifier ?: continue
+                    highlight(ident, FUNCTION_CALL, holder)
+                }
+                is YarPrimaryExpr -> {
+                    val identExpr = target.identExpr ?: continue
+                    highlight(identExpr, FUNCTION_CALL, holder)
+                }
             }
         }
     }
