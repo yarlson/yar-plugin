@@ -95,5 +95,20 @@
         <runConfigurationProducer implementation="dev.yarlson.yar.run.YarRunConfigurationProducer"/>
         <runLineMarkerContributor language="Yar"
                                   implementationClass="dev.yarlson.yar.run.YarRunLineMarkerProvider"/>
+
+        <!-- Quote Handler -->
+        <quoteHandler fileType="Yar"
+                      className="dev.yarlson.yar.editor.YarQuoteHandler"/>
+
+        <!-- Spellchecking -->
+        <spellchecker.support language="Yar"
+                              implementationClass="dev.yarlson.yar.editor.YarSpellcheckingStrategy"/>
+
+        <!-- TODO Indexer -->
+        <indexPatternBuilder implementation="dev.yarlson.yar.editor.YarTodoIndexer"/>
+
+        <!-- Live Templates -->
+        <defaultLiveTemplates file="/liveTemplates/Yar"/>
+        <liveTemplateContext implementation="dev.yarlson.yar.editor.YarLiveTemplateContext"/>
     </extensions>
 </idea-plugin>

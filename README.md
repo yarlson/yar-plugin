@@ -13,9 +13,13 @@ IntelliJ IDEA language support plugin for the [Yar](https://yarlson.dev) program
 ### Editor
 
 - Brace matching for `{}`, `[]`, `()`
+- Auto-closing quotes
 - Line commenting (`Cmd+/` / `Ctrl+/`)
 - Code folding for functions, structs, interfaces, enums, blocks, and import groups
 - Code formatting with spacing and indentation rules (`Cmd+Alt+L` / `Ctrl+Alt+L`)
+- Spellchecking in comments and strings
+- TODO/FIXME highlighting in comments
+- Live templates (`fn`, `pfn`, `main`, `st`, `en`, `iface`, `if`, `ife`, `for`, `fori`, `match`, `err`, `imp`)
 
 ### Navigation
 
@@ -132,16 +136,19 @@ src/main/
 │   ├── parser/                    # ParserDefinition
 │   ├── psi/                       # PSI types, token sets, named elements, element factory
 │   ├── highlighting/              # Syntax highlighter, semantic annotator, color settings
-│   ├── editor/                    # Brace matcher, commenter, folding
+│   ├── editor/                    # Brace matcher, commenter, folding, quote handler, spellcheck, TODO, live templates
 │   ├── structure/                 # Structure view
 │   ├── references/                # Reference resolution
 │   ├── navigation/                # Find usages, go-to-symbol
 │   ├── completion/                # Code completion
 │   ├── documentation/             # Quick documentation
-│   └── formatter/                 # Code formatting
+│   ├── formatter/                 # Code formatting
+│   ├── external/                  # External annotator (yar check)
+│   └── run/                       # Run configurations, line markers
 ├── gen/                           # Generated lexer/parser/PSI (not committed)
 └── resources/
     ├── META-INF/plugin.xml        # Plugin descriptor
+    ├── liveTemplates/Yar.xml      # Live template definitions
     └── icons/yar.svg              # File icon
 ```
 

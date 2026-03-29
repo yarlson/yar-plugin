@@ -1,0 +1,100 @@
+<templateSet group="Yar">
+    <template name="fn" value="fn $NAME$($PARAMS$) $RET$ {&#10;    $END$&#10;}" description="Function declaration" toReformat="true" toShortenFQNames="false">
+        <variable name="NAME" expression="" defaultValue="name" alwaysStopAt="true"/>
+        <variable name="PARAMS" expression="" defaultValue="" alwaysStopAt="true"/>
+        <variable name="RET" expression="" defaultValue="void" alwaysStopAt="true"/>
+        <context>
+            <option name="YAR" value="true"/>
+        </context>
+    </template>
+
+    <template name="pfn" value="pub fn $NAME$($PARAMS$) $RET$ {&#10;    $END$&#10;}" description="Public function declaration" toReformat="true" toShortenFQNames="false">
+        <variable name="NAME" expression="" defaultValue="name" alwaysStopAt="true"/>
+        <variable name="PARAMS" expression="" defaultValue="" alwaysStopAt="true"/>
+        <variable name="RET" expression="" defaultValue="void" alwaysStopAt="true"/>
+        <context>
+            <option name="YAR" value="true"/>
+        </context>
+    </template>
+
+    <template name="main" value="fn main() i32 {&#10;    $END$&#10;    return 0&#10;}" description="Main function" toReformat="true" toShortenFQNames="false">
+        <context>
+            <option name="YAR" value="true"/>
+        </context>
+    </template>
+
+    <template name="st" value="struct $NAME$ {&#10;    $END$&#10;}" description="Struct declaration" toReformat="true" toShortenFQNames="false">
+        <variable name="NAME" expression="" defaultValue="Name" alwaysStopAt="true"/>
+        <context>
+            <option name="YAR" value="true"/>
+        </context>
+    </template>
+
+    <template name="en" value="enum $NAME$ {&#10;    $END$&#10;}" description="Enum declaration" toReformat="true" toShortenFQNames="false">
+        <variable name="NAME" expression="" defaultValue="Name" alwaysStopAt="true"/>
+        <context>
+            <option name="YAR" value="true"/>
+        </context>
+    </template>
+
+    <template name="iface" value="interface $NAME$ {&#10;    $END$&#10;}" description="Interface declaration" toReformat="true" toShortenFQNames="false">
+        <variable name="NAME" expression="" defaultValue="Name" alwaysStopAt="true"/>
+        <context>
+            <option name="YAR" value="true"/>
+        </context>
+    </template>
+
+    <template name="if" value="if $COND$ {&#10;    $END$&#10;}" description="If statement" toReformat="true" toShortenFQNames="false">
+        <variable name="COND" expression="" defaultValue="condition" alwaysStopAt="true"/>
+        <context>
+            <option name="YAR" value="true"/>
+        </context>
+    </template>
+
+    <template name="ife" value="if $COND$ {&#10;    $THEN$&#10;} else {&#10;    $END$&#10;}" description="If-else statement" toReformat="true" toShortenFQNames="false">
+        <variable name="COND" expression="" defaultValue="condition" alwaysStopAt="true"/>
+        <variable name="THEN" expression="" defaultValue="" alwaysStopAt="true"/>
+        <context>
+            <option name="YAR" value="true"/>
+        </context>
+    </template>
+
+    <template name="for" value="for $COND$ {&#10;    $END$&#10;}" description="For loop" toReformat="true" toShortenFQNames="false">
+        <variable name="COND" expression="" defaultValue="condition" alwaysStopAt="true"/>
+        <context>
+            <option name="YAR" value="true"/>
+        </context>
+    </template>
+
+    <template name="fori" value="for $INIT$; $COND$; $POST$ {&#10;    $END$&#10;}" description="C-style for loop" toReformat="true" toShortenFQNames="false">
+        <variable name="INIT" expression="" defaultValue="i := 0" alwaysStopAt="true"/>
+        <variable name="COND" expression="" defaultValue="i &lt; n" alwaysStopAt="true"/>
+        <variable name="POST" expression="" defaultValue="i = i + 1" alwaysStopAt="true"/>
+        <context>
+            <option name="YAR" value="true"/>
+        </context>
+    </template>
+
+    <template name="match" value="match $EXPR$ {&#10;case $CASE$ {&#10;    $END$&#10;}&#10;}" description="Match statement" toReformat="true" toShortenFQNames="false">
+        <variable name="EXPR" expression="" defaultValue="expr" alwaysStopAt="true"/>
+        <variable name="CASE" expression="" defaultValue="Type.Case(v)" alwaysStopAt="true"/>
+        <context>
+            <option name="YAR" value="true"/>
+        </context>
+    </template>
+
+    <template name="err" value="$EXPR$ or |$ERR$| {&#10;    $END$&#10;}" description="Error handling with or" toReformat="true" toShortenFQNames="false">
+        <variable name="EXPR" expression="" defaultValue="expr" alwaysStopAt="true"/>
+        <variable name="ERR" expression="" defaultValue="err" alwaysStopAt="true"/>
+        <context>
+            <option name="YAR" value="true"/>
+        </context>
+    </template>
+
+    <template name="imp" value="import &quot;$PKG$&quot;" description="Import declaration" toReformat="true" toShortenFQNames="false">
+        <variable name="PKG" expression="" defaultValue="strings" alwaysStopAt="true"/>
+        <context>
+            <option name="YAR" value="true"/>
+        </context>
+    </template>
+</templateSet>
