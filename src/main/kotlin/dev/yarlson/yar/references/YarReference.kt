@@ -133,6 +133,10 @@ class YarReference(element: PsiElement, rangeInElement: TextRange) :
             if (parent is YarPackageDecl) return null
             // Don't create references for dot-accessed field names
             if (parent is YarDotAccess) return null
+            // Don't create references for field names in struct literal field inits
+            if (parent is YarFieldInit && parent.firstChild == element) return null
+            // Don't create references for non-first identifiers in qualified names (member access)
+            if (parent is YarQualifiedName && element.prevSibling != null) return null
 
             return YarReference(element, TextRange(0, element.textLength))
         }

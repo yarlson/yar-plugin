@@ -176,8 +176,8 @@ param ::= IDENTIFIER typeExpr {
 
 typeExpr ::= errorableType
            | pointerType
-           | arrayType
            | sliceType
+           | arrayType
            | mapType
            | functionType
            | namedType
@@ -304,7 +304,6 @@ private postfixOp ::= callArgs
                      | dotAccess
                      | indexOrSlice
                      | propagateOp
-                     | structLiteralBody
 
 callArgs ::= '(' argList? ')' {pin=1}
 
@@ -316,26 +315,21 @@ indexOrSlice ::= '[' expression (':' expression)? ']' {pin=1}
 
 propagateOp ::= '?'
 
-structLiteralBody ::= '{' fieldInitList? '}' {pin=1}
-
-private fieldInitList ::= fieldInit (',' fieldInit)* ','?
-
-fieldInit ::= IDENTIFIER ':' expression {pin=2}
-
 // ============================================================
 // Primary expressions
 // ============================================================
 
 primaryExpr ::= groupExpr
               | functionLiteralExpr
-              | arrayLiteralExpr
               | sliceLiteralExpr
+              | arrayLiteralExpr
               | mapLiteralExpr
               | errorLiteralExpr
               | boolLiteralExpr
               | nilLiteralExpr
               | intLiteralExpr
               | stringLiteralExpr
+              | structLiteralExpr
               | identExpr
 
 groupExpr ::= '(' expression ')' {pin=1}
@@ -353,6 +347,12 @@ private expressionList ::= expression (',' expression)* ','?
 private mapEntryList ::= mapEntry (',' mapEntry)* ','?
 
 mapEntry ::= expression ':' expression {pin=2}
+
+structLiteralExpr ::= qualifiedName typeArgList? '{' fieldInitList? '}'
+
+private fieldInitList ::= fieldInit (',' fieldInit)* ','?
+
+fieldInit ::= IDENTIFIER ':' expression {pin=2}
 
 errorLiteralExpr ::= 'error' '.' IDENTIFIER {pin=1}
 

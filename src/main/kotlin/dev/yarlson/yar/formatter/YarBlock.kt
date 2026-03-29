@@ -68,7 +68,7 @@ class YarBlock(
             YarTypes.ENUM_DECL,
             YarTypes.MATCH_STMT,
             YarTypes.ENUM_CASE_FIELDS,
-            YarTypes.STRUCT_LITERAL_BODY,
+            YarTypes.STRUCT_LITERAL_EXPR,
         )
     }
 }
