@@ -73,5 +73,13 @@
         <!-- Go to Symbol -->
         <gotoSymbolContributor
                 implementation="dev.yarlson.yar.navigation.YarGoToSymbolContributor"/>
+
+        <!-- Code Completion -->
+        <completion.contributor language="Yar"
+                                implementationClass="dev.yarlson.yar.completion.YarCompletionContributor"/>
+
+        <!-- Documentation -->
+        <lang.documentationProvider language="Yar"
+                                    implementationClass="dev.yarlson.yar.documentation.YarDocumentationProvider"/>
     </extensions>
 </idea-plugin>
