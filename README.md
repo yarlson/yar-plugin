@@ -1,150 +1,157 @@
 # Yar IntelliJ Plugin
 
-IntelliJ IDEA language support plugin for the **Yar** programming language. Provides IDE integration features including syntax highlighting, parsing, code folding, structure view, and more.
+IntelliJ IDEA language support plugin for the [Yar](https://yarlson.dev) programming language.
 
 ## Features
 
-- **Syntax and semantic highlighting** - Full lexer-based syntax highlighting with semantic annotations
-- **Code parsing and error recovery** - Complete parser with graceful error handling
-- **Brace matching** - Automatic matching of `()`, `{}`, and `[]`
-- **Line commenting** - Toggle line comments with standard keyboard shortcuts
-- **Code folding** - Collapse functions, structs, interfaces, enums, and blocks
-- **Structure view** - Navigate code structure in the Structure tool window
-- **Configurable color scheme** - Customize colors via Settings → Editor → Color Scheme → Yar
+### Syntax & Highlighting
+
+- Lexer-based syntax highlighting for keywords, strings, numbers, comments, operators, delimiters
+- Semantic highlighting for type names, function names/calls, parameters, fields, enum cases, error literals, `pub` modifier
+- Configurable color scheme (Settings > Editor > Color Scheme > Yar)
+
+### Editor
+
+- Brace matching for `{}`, `[]`, `()`
+- Line commenting (`Cmd+/` / `Ctrl+/`)
+- Code folding for functions, structs, interfaces, enums, blocks, and import groups
+- Code formatting with spacing and indentation rules (`Cmd+Alt+L` / `Ctrl+Alt+L`)
+
+### Navigation
+
+- Structure view with structs (fields), interfaces (methods), enums (cases), and functions
+- Go to definition (`Cmd+B` / `Ctrl+B`)
+- Find usages (`Alt+F7`)
+- Go to symbol (`Cmd+Alt+O` / `Ctrl+Alt+Shift+N`)
+- Rename refactoring (`Shift+F6`)
+
+### Code Intelligence
+
+- Code completion for keywords, builtin types/functions, stdlib packages, and local symbols
+- Quick documentation for builtins, stdlib packages, and all declarations (`F1` / `Ctrl+Q`)
+
+### External Integration (planned)
+
+- External annotator using `yar check` for real compiler diagnostics
+- Run configurations for `yar run` and `yar build`
+- Gutter run icons for `fn main()`
 
 ## Requirements
 
-- IntelliJ IDEA 2024.3.1.1 or later (build 243+)
-- JDK 21 or later
+- IntelliJ IDEA 2024.3+ (build 243+)
+- JDK 21+
+- [Yar compiler](https://yarlson.dev) (for run configs and external diagnostics)
 
 ## Installation
 
-### From JetBrains Marketplace
-
-Not documented. Check JetBrains Marketplace for availability.
-
 ### From Source
 
-1. Clone the repository
-2. Build the plugin:
-
 ```bash
+git clone <repo-url>
+cd yar-plugin
+export JAVA_HOME=/path/to/jdk21+
 ./gradlew build
 ```
 
-3. Install the plugin from `build/distributions/Yar-*.zip` via **Settings → Plugins → ⚙️ → Install Plugin from Disk**
+Install from `build/distributions/Yar-*.zip` via Settings > Plugins > Install Plugin from Disk.
 
-## Usage
+### Development Sandbox
 
-Once installed, the plugin automatically recognizes files with the `.yar` extension and provides:
+```bash
+./gradlew runIde
+```
 
-- Syntax highlighting for keywords, identifiers, literals, operators, and comments
-- Code navigation via Structure view
-- Code folding for collapsible regions
-- Brace matching and auto-pairing
-- Line commenting with `Ctrl+/` (or `Cmd+/` on macOS)
+Opens an IntelliJ instance with the plugin loaded for testing.
 
-### Yar Language Overview
+## Yar Language
 
-Yar is a programming language with the following constructs:
+Yar is a compiled programming language with Go-like syntax, LLVM backend, explicit error handling, and no exceptions.
 
-```yar
+```
 package main
 
-import "fmt"
+import "strings"
 
 pub struct User {
-    name string
-    age  int
+    name str
+    age i32
 }
 
-pub fn greet(u User) string {
-    return "Hello, " + u.name
+enum Status {
+    Active
+    Inactive { reason str }
 }
 
-fn main() {
+fn (u User) greet(other str) !str {
+    if strings.contains(other, " ") {
+        return error.InvalidName
+    }
+    return u.name + ": hello, " + other
+}
+
+pub fn main() i32 {
     user := User{name: "Alice", age: 30}
-    message := greet(user)
+    msg := user.greet("Bob") or |err| {
+        print("error\n")
+        return 1
+    }
+    print(msg)
+    return 0
 }
 ```
 
-**Supported language features:**
-
-- Package and import declarations
-- Structs, interfaces, and enums
-- Functions with receivers and generics
-- Variables (`var`, `:=`)
-- Control flow (`if`, `else`, `for`, `match`, `break`, `continue`, `return`)
-- Types: pointers (`*`), arrays (`[N]T`), slices (`[]T`), maps (`map[K]V`), function types
-- Error handling with `!` and `or` expressions
-- Operators: arithmetic, comparison, logical, unary
+Key language features: structs, interfaces, enums with payloads, generics, methods with receivers, pointers, slices, maps, closures, `match` expressions, error propagation (`?`) and handling (`or |err| {}`).
 
 ## Development
 
-### Prerequisites
-
-- JDK 21+
-- Gradle (wrapper included)
-
 ### Build Commands
 
-| Command                                  | Description                                                  |
-| ---------------------------------------- | ------------------------------------------------------------ |
-| `./gradlew generateLexer generateParser` | Generate lexer and parser from grammar files                 |
-| `./gradlew build`                        | Build the plugin                                             |
-| `./gradlew compileKotlin compileJava`    | Compile source code (depends on code generation)             |
-| `./gradlew test`                         | Run tests (JUnit 4.13.2)                                     |
-| `./gradlew clean`                        | Clean build artifacts and generated sources (`src/main/gen`) |
-| `./gradlew verifyPlugin`                 | Verify plugin compatibility with IntelliJ Platform           |
+| Command                                  | Description                                        |
+| ---------------------------------------- | -------------------------------------------------- |
+| `./gradlew build`                        | Full build (generate + compile + package + verify) |
+| `./gradlew generateLexer generateParser` | Regenerate lexer/parser from grammar files         |
+| `./gradlew runIde`                       | Launch sandbox IDE with plugin                     |
+| `./gradlew test`                         | Run tests                                          |
+| `./gradlew verifyPluginStructure`        | Verify plugin structure                            |
+| `./gradlew runPluginVerifier`            | Check binary compatibility with target IDEs        |
+| `./gradlew clean`                        | Clean build artifacts and generated sources        |
 
 ### Project Structure
 
 ```
-src/
-├── main/
-│   ├── grammars/
-│   │   ├── Yar.bnf          # Parser grammar (BNF)
-│   │   └── Yar.flex         # Lexer grammar (JFlex)
-│   ├── kotlin/dev/yarlson/yar/
-│   │   ├── YarLanguage.kt   # Language definition
-│   │   ├── YarFileType.kt   # File type registration
-│   │   ├── editor/          # Brace matcher, commenter, folding
-│   │   ├── highlighting/    # Syntax highlighter, annotator, color settings
-│   │   ├── lexer/           # Lexer adapter
-│   │   ├── parser/          # Parser definition
-│   │   ├── psi/             # PSI elements and utilities
-│   │   └── structure/       # Structure view
-│   ├── gen/                 # Generated lexer/parser (created by build)
-│   └── resources/
-│       └── META-INF/
-│           └── plugin.xml   # Plugin manifest
-└── test/
+src/main/
+├── grammars/
+│   ├── Yar.bnf                    # Grammar-Kit BNF grammar
+│   └── Yar.flex                   # JFlex lexer definition
+├── kotlin/dev/yarlson/yar/
+│   ├── YarLanguage.kt             # Language singleton
+│   ├── YarFileType.kt             # .yar file type
+│   ├── YarIcons.kt                # Plugin icons
+│   ├── lexer/                     # FlexAdapter wrapper
+│   ├── parser/                    # ParserDefinition
+│   ├── psi/                       # PSI types, token sets, named elements, element factory
+│   ├── highlighting/              # Syntax highlighter, semantic annotator, color settings
+│   ├── editor/                    # Brace matcher, commenter, folding
+│   ├── structure/                 # Structure view
+│   ├── references/                # Reference resolution
+│   ├── navigation/                # Find usages, go-to-symbol
+│   ├── completion/                # Code completion
+│   ├── documentation/             # Quick documentation
+│   └── formatter/                 # Code formatting
+├── gen/                           # Generated lexer/parser/PSI (not committed)
+└── resources/
+    ├── META-INF/plugin.xml        # Plugin descriptor
+    └── icons/yar.svg              # File icon
 ```
 
 ### Technology Stack
 
-- **Kotlin** (JVM target 21)
-- **IntelliJ Platform SDK** 2024.3.1.1
-- **JetBrains GrammarKit** - Parser/lexer generation from BNF and Flex grammars
-- **JUnit 4** - Testing framework
-
-## Troubleshooting
-
-| Symptom              | Solution                                                                    |
-| -------------------- | --------------------------------------------------------------------------- |
-| No README.md file    | This file addresses this issue                                              |
-| No LICENSE file      | Add a LICENSE file specifying the project's license terms                   |
-| Empty test directory | Test resources exist but no test implementations found in `src/test/kotlin` |
-
-## Contributing
-
-Not documented. Check the repository for contribution guidelines.
-
-## License
-
-Not specified. Check the repository for license information.
+- **Kotlin** + **Java 21** bytecode target
+- **IntelliJ Platform Gradle Plugin** 2.13.1
+- **Grammar-Kit** 2023.3.0.3 (BNF parser generation)
+- **JFlex** (lexer generation)
+- **IntelliJ Platform SDK** 2024.3
 
 ---
 
 **Vendor**: [yarlson.dev](https://yarlson.dev)
-**Version**: 0.1.0

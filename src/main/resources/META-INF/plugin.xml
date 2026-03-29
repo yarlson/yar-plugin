@@ -81,5 +81,9 @@
         <!-- Documentation -->
         <lang.documentationProvider language="Yar"
                                     implementationClass="dev.yarlson.yar.documentation.YarDocumentationProvider"/>
+
+        <!-- Formatting -->
+        <lang.formatter language="Yar"
+                        implementationClass="dev.yarlson.yar.formatter.YarFormattingModelBuilder"/>
     </extensions>
 </idea-plugin>
