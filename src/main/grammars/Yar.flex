@@ -59,6 +59,11 @@ UNTERMINATED_CHAR='([^'\\\r\n]|\\[ntr0\\\\'])?
 
   // Multi-character operators (must come before single-char)
   ":="                    { return COLON_ASSIGN; }
+  "+="                    { return PLUS_EQ; }
+  "-="                    { return MINUS_EQ; }
+  "*="                    { return STAR_EQ; }
+  "/="                    { return SLASH_EQ; }
+  "%="                    { return PERCENT_EQ; }
   "=="                    { return EQ_EQ; }
   "!="                    { return BANG_EQ; }
   "<="                    { return LT_EQ; }

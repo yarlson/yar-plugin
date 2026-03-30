@@ -40,6 +40,11 @@
 
     // Multi-character operators
     COLON_ASSIGN=':='
+    PLUS_EQ='+='
+    MINUS_EQ='-='
+    STAR_EQ='*='
+    SLASH_EQ='/='
+    PERCENT_EQ='%='
     EQ_EQ='=='
     BANG_EQ='!='
     LT_EQ='<='
@@ -270,7 +275,7 @@ matchArm ::= 'case' qualifiedName ('(' IDENTIFIER ')')? block {pin=1}
 matchElseArm ::= 'else' block {pin=1}
 
 // Assignment or expression statement — disambiguated after parsing the LHS
-assignOrExprStmt ::= expression ('=' expression)?
+assignOrExprStmt ::= expression (('=' | '+=' | '-=' | '*=' | '/=' | '%=') expression)?
 
 // ============================================================
 // Expressions (precedence via nesting, lowest to highest)
@@ -323,7 +328,7 @@ dotAccess ::= '.' IDENTIFIER {
   mixin="dev.yarlson.yar.psi.YarDotAccessMixin"
 }
 
-indexOrSlice ::= '[' expression (':' expression)? ']' {pin=1}
+indexOrSlice ::= '[' expression? (':' expression?)? ']' {pin=1}
 
 propagateOp ::= '?'
 

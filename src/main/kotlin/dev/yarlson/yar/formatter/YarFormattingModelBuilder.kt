@@ -39,6 +39,11 @@ class YarFormattingModelBuilder : FormattingModelBuilder {
                 // Around assignment operators
                 .around(YarTypes.EQ).spaceIf(true)
                 .around(YarTypes.COLON_ASSIGN).spaceIf(true)
+                .around(YarTypes.PLUS_EQ).spaceIf(true)
+                .around(YarTypes.MINUS_EQ).spaceIf(true)
+                .around(YarTypes.STAR_EQ).spaceIf(true)
+                .around(YarTypes.SLASH_EQ).spaceIf(true)
+                .around(YarTypes.PERCENT_EQ).spaceIf(true)
 
                 // Around binary operators
                 .around(YarTypes.PLUS).spaceIf(true)

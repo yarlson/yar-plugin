@@ -66,6 +66,7 @@ class YarSyntaxHighlighter : SyntaxHighlighterBase() {
 
         private val OPERATOR_TOKENS = setOf(
             YarTypes.EQ, YarTypes.COLON, YarTypes.COLON_ASSIGN,
+            YarTypes.PLUS_EQ, YarTypes.MINUS_EQ, YarTypes.STAR_EQ, YarTypes.SLASH_EQ, YarTypes.PERCENT_EQ,
             YarTypes.BANG, YarTypes.QUESTION,
             YarTypes.AMP, YarTypes.PIPE,
             YarTypes.PLUS, YarTypes.MINUS, YarTypes.STAR, YarTypes.SLASH, YarTypes.PERCENT,
