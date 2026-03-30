@@ -13,7 +13,7 @@ import java.util.concurrent.TimeUnit
 
 class YarExternalAnnotator : ExternalAnnotator<YarExternalAnnotator.Info, List<YarExternalAnnotator.Issue>>() {
 
-    data class Info(val filePath: String, val document: Document)
+    data class Info(val filePath: String, val document: Document, val packageName: String? = null)
 
     data class Issue(
         val file: String,
@@ -29,12 +29,23 @@ class YarExternalAnnotator : ExternalAnnotator<YarExternalAnnotator.Info, List<Y
         val path = virtualFile.path
         // Only annotate files on disk
         if (!File(path).exists()) return null
-        return Info(path, document)
+        // Detect package name to filter diagnostics for library packages
+        val packageName = file.children
+            .filterIsInstance<dev.yarlson.yar.psi.YarPackageDecl>()
+            .firstOrNull()
+            ?.node?.findChildByType(dev.yarlson.yar.psi.YarTypes.IDENTIFIER)?.text
+        return Info(path, document, packageName)
     }
 
     override fun doAnnotate(collectedInfo: Info): List<Issue> {
         val yarPath = findYarExecutable() ?: return emptyList()
-        return runYarCheck(yarPath, collectedInfo.filePath)
+        val issues = runYarCheck(yarPath, collectedInfo.filePath)
+        // Library packages (non-main) produce a spurious "package must be main"
+        // diagnostic from `yar check`. Filter it out.
+        if (collectedInfo.packageName != null && collectedInfo.packageName != "main") {
+            return issues.filter { it.message != "package must be main" }
+        }
+        return issues
     }
 
     override fun apply(file: PsiFile, issues: List<Issue>, holder: AnnotationHolder) {

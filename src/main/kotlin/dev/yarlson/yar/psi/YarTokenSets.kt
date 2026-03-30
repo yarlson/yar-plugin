@@ -10,7 +10,7 @@ object YarTokenSets {
     val WHITE_SPACES = TokenSet.create(com.intellij.psi.TokenType.WHITE_SPACE)
 
     @JvmField
-    val STRINGS = TokenSet.create(YarTypes.STRING_LITERAL)
+    val STRINGS = TokenSet.create(YarTypes.STRING_LITERAL, YarTypes.CHAR_LITERAL)
 
     @JvmField
     val KEYWORDS = TokenSet.create(

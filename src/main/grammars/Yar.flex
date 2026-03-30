@@ -21,8 +21,10 @@ WHITE_SPACE=[\s]+
 LINE_COMMENT="//"[^\r\n]*
 INTEGER_LITERAL=[0-9]+
 IDENTIFIER=[a-zA-Z_][a-zA-Z0-9_]*
-STRING_LITERAL=\"([^\"\\\r\n]|\\[nt\\\"])*\"
-UNTERMINATED_STRING=\"([^\"\\\r\n]|\\[nt\\\"])*
+STRING_LITERAL=\"([^\"\\\r\n]|\\[ntr0\\\"])*\"
+UNTERMINATED_STRING=\"([^\"\\\r\n]|\\[ntr0\\\"])*
+CHAR_LITERAL='([^'\\\r\n]|\\[ntr0\\\\'])'
+UNTERMINATED_CHAR='([^'\\\r\n]|\\[ntr0\\\\'])?
 
 %%
 
@@ -91,6 +93,8 @@ UNTERMINATED_STRING=\"([^\"\\\r\n]|\\[nt\\\"])*
   // Literals
   {STRING_LITERAL}        { return STRING_LITERAL; }
   {UNTERMINATED_STRING}   { return BAD_CHARACTER; }
+  {CHAR_LITERAL}          { return CHAR_LITERAL; }
+  {UNTERMINATED_CHAR}     { return BAD_CHARACTER; }
   {INTEGER_LITERAL}       { return INTEGER_LITERAL; }
 
   // Identifier (after keywords)

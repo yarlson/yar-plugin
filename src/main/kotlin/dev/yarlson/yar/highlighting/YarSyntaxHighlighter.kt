@@ -20,7 +20,7 @@ class YarSyntaxHighlighter : SyntaxHighlighterBase() {
         return when {
             tokenType in YarTokenSets.KEYWORDS -> KEYWORD_KEYS
             tokenType == YarTypes.INTEGER_LITERAL -> NUMBER_KEYS
-            tokenType == YarTypes.STRING_LITERAL -> STRING_KEYS
+            tokenType == YarTypes.STRING_LITERAL || tokenType == YarTypes.CHAR_LITERAL -> STRING_KEYS
             tokenType == YarTypes.LINE_COMMENT -> COMMENT_KEYS
             tokenType == YarTypes.LPAREN || tokenType == YarTypes.RPAREN -> PAREN_KEYS
             tokenType == YarTypes.LBRACE || tokenType == YarTypes.RBRACE -> BRACE_KEYS

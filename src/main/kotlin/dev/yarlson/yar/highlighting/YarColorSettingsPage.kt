@@ -86,6 +86,14 @@ fn (<param>u</param> <typeName>User</typeName>) <funcName>greet</funcName>(<para
     return <param>u</param>.<field>name</field> + ": hello, " + <param>name</param>
 }
 
+fn <funcName>classify</funcName>(<param>ch</param> <typeName>i32</typeName>) <typeName>str</typeName> {
+    // Character literals produce i32 values
+    if <param>ch</param> >= 'a' && <param>ch</param> <= 'z' {
+        return "lower"
+    }
+    return "other"
+}
+
 <pub>pub</pub> fn <funcName>main</funcName>() <typeName>i32</typeName> {
     user := <typeName>User</typeName>{<field>name</field>: "Alice", <field>age</field>: 30}
     msg := user.<funcCall>greet</funcCall>("Bob") or |err| {
@@ -93,6 +101,9 @@ fn (<param>u</param> <typeName>User</typeName>) <funcName>greet</funcName>(<para
         return 1
     }
     <funcCall>print</funcCall>(msg)
+    // Implicit pointer dereference: p.field works for *Struct
+    p := &<typeName>User</typeName>{<field>name</field>: "Bob", <field>age</field>: 25}
+    <funcCall>print</funcCall>(p.<field>name</field>)
     return 0
 }
 """.trimIndent()

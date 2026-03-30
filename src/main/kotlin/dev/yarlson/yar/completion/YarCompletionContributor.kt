@@ -103,6 +103,9 @@ class YarCompletionContributor : CompletionContributor() {
                 "delete" to "(map[K]V, K) void",
                 "keys" to "(map[K]V) []K",
                 "to_str" to "(i32 | i64 | bool | str | error) str",
+                "sb_new" to "() i64",
+                "sb_write" to "(i64, str) void",
+                "sb_string" to "(i64) str",
             )
 
             private val STDLIB_PACKAGES = listOf(
