@@ -42,7 +42,7 @@ All hand-written Kotlin source lives under `dev.yarlson.yar` in `src/main/kotlin
 
 - `src/test/kotlin/dev/yarlson/yar/parser/YarParserTest.kt` -- parser tests that compare parsed PSI trees against expected `.txt` fixtures
 - `src/test/kotlin/dev/yarlson/yar/references/YarReferenceTest.kt` -- reference resolution tests
-- `src/test/resources/testData/parser/` -- paired `.yar` / `.txt` test fixtures for parser validation (Closures, Divide, Enums, Generics, Interfaces, Maps, Methods, Pointers, StructsAndLoops)
+- `src/test/resources/testData/parser/` -- paired `.yar` / `.txt` test fixtures for parser validation (Closures, Concurrency, Divide, Enums, Generics, Interfaces, Maps, Methods, Pointers, StructsAndLoops)
 
 ## Build
 

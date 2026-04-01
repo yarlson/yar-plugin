@@ -9,9 +9,9 @@ The plugin's grammar defines the following Yar language constructs. This is the 
 
 ## Type System
 
-- Primitive/builtin types: `bool`, `i32`, `i64`, `str`, `void`, `noreturn`
+- Primitive/builtin types: `bool`, `i32`, `i64`, `str`, `void`, `noreturn`, `error`
 - Composite types: structs (with fields), interfaces (with methods), enums (with cases, optionally carrying fields)
-- Type constructors: pointers (`*T`), arrays (`[N]T`), slices (`[]T`), maps (`map[K]V`), function types (`fn(T) R`), errorable types (`!T`)
+- Type constructors: pointers (`*T`), arrays (`[N]T`), slices (`[]T`), maps (`map[K]V`), channels (`chan[T]`), function types (`fn(T) R`), errorable types (`!T`)
 - Generic type parameters via bracket syntax: `Name[T]`
 
 ## Expressions
@@ -19,12 +19,12 @@ The plugin's grammar defines the following Yar language constructs. This is the 
 - Precedence from lowest to highest: handle (`or |err| { ... }`), logical or, logical and, equality, comparison, additive, multiplicative, unary, postfix
 - Postfix operations: function call, dot access, index/slice, error propagation (`?`)
 - Struct literal expressions: `TypeName{ field: value, ... }` and qualified `pkg.TypeName{ field: value, ... }`
-- Primary expressions: grouping, function literals, array/slice/map literals, error literals, bool/nil/int/string literals, identifiers
+- Primary expressions: grouping, function literals, taskgroup expressions, array/slice/map literals, error literals, bool/nil/int/string literals, identifiers
 
 ## Statements
 
 - Variable declarations: `var name Type = expr` and short declarations `name := expr`
-- Control flow: `if`/`else`, `for` (with optional C-style clause or condition), `break`, `continue`, `return`, `match`/`case`
+- Control flow: `if`/`else`, `for` (with optional C-style clause or condition), `break`, `continue`, `return`, `match`/`case`, `spawn`
 - Assignment and expression statements
 
 ## Functions
@@ -42,8 +42,8 @@ The plugin's grammar defines the following Yar language constructs. This is the 
 
 ## Builtin Functions
 
-The completion provider offers these builtins: `print`, `print_int`, `panic`, `len`, `append`, `has`, `delete`, `keys`.
+The completion provider offers these builtins: `print`, `panic`, `len`, `append`, `has`, `delete`, `keys`, `to_str`, `sb_new`, `sb_write`, `sb_string`, `chan_new`, `chan_send`, `chan_recv`, `chan_close`.
 
 ## Standard Library Packages
 
-Known to completion: `strings`, `utf8`, `conv`, `sort`, `path`, `fs`, `process`, `env`, `stdio`.
+Known to completion: `strings`, `utf8`, `conv`, `sort`, `path`, `fs`, `process`, `env`, `stdio`, `net`, `testing`.

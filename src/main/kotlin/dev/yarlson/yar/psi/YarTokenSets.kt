@@ -18,8 +18,9 @@ object YarTokenSets {
         YarTypes.VAR_KW, YarTypes.STRUCT_KW, YarTypes.INTERFACE_KW, YarTypes.ENUM_KW,
         YarTypes.OR_KW, YarTypes.IF_KW, YarTypes.ELSE_KW, YarTypes.FOR_KW,
         YarTypes.BREAK_KW, YarTypes.CONTINUE_KW, YarTypes.RETURN_KW,
-        YarTypes.MATCH_KW, YarTypes.CASE_KW, YarTypes.TRUE_KW, YarTypes.FALSE_KW,
-        YarTypes.NIL_KW, YarTypes.ERROR_KW, YarTypes.MAP_KW, YarTypes.LET_KW,
+        YarTypes.MATCH_KW, YarTypes.CASE_KW, YarTypes.TASKGROUP_KW, YarTypes.SPAWN_KW,
+        YarTypes.TRUE_KW, YarTypes.FALSE_KW, YarTypes.NIL_KW, YarTypes.ERROR_KW,
+        YarTypes.MAP_KW, YarTypes.CHAN_KW, YarTypes.LET_KW,
     )
 
     @JvmField

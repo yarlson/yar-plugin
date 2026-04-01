@@ -12,10 +12,10 @@ Key architectural layers:
 
 - **Grammar and PSI** -- BNF grammar (`Yar.bnf`) and JFlex lexer (`Yar.flex`) define the language syntax. Generated Java code provides the PSI element hierarchy under `dev.yarlson.yar.psi`.
 - **Lexer/Parser** -- `YarLexerAdapter` wraps the generated JFlex lexer. `YarParserDefinition` wires the generated parser into the platform.
-- **Highlighting** -- Token-level syntax highlighting via `YarSyntaxHighlighter`. Semantic highlighting via `YarAnnotator` (types, functions, parameters, fields, enum cases, pub modifier, call targets). `YarColorSettingsPage` exposes configurable color settings.
+- **Highlighting** -- Token-level syntax highlighting via `YarSyntaxHighlighter`. Semantic highlighting via `YarAnnotator` (types, functions, parameters, fields, enum cases, pub modifier, call targets). `YarColorSettingsPage` exposes configurable color settings, including the newer structured concurrency keywords and channel syntax.
 - **Editor features** -- Brace matching, line/block commenting, code folding, quote auto-closing, spellchecking in comments/strings, TODO indexing, and live templates.
 - **Navigation** -- Go to symbol (`YarGoToSymbolContributor`), find usages (`YarFindUsagesProvider`), PSI-based reference resolution (`YarReference`) with local, file, and cross-package scope.
-- **Code intelligence** -- Keyword, builtin, and local symbol completion. Documentation provider for hover info. Rename refactoring via `YarNamedElement` / `PsiNameIdentifierOwner`.
+- **Code intelligence** -- Keyword, builtin, stdlib package, and local symbol completion. Documentation provider for hover info. Rename refactoring via `YarNamedElement` / `PsiNameIdentifierOwner`.
 - **Formatting** -- `YarFormattingModelBuilder` with spacing rules for operators, keywords, braces, and delimiters. `YarBlock` handles indentation within braces.
 - **Structure view** -- Tree-based structure view showing top-level and nested declarations.
 - **External tooling** -- `YarExternalAnnotator` runs the `yar check` CLI tool and maps its output to in-editor error annotations.
@@ -51,6 +51,7 @@ Key architectural layers:
 - Rename refactoring (symbol rename across file)
 - Keyword, builtin type/function, and local symbol completion
 - Stdlib package name completion for imports
+- Concurrency syntax support for `taskgroup`, `spawn`, `chan[T]`, and channel builtins
 - Documentation on hover
 - Code formatting (spacing and indentation)
 - External `yar check` integration with in-editor error display

@@ -84,6 +84,8 @@ class YarFormattingModelBuilder : FormattingModelBuilder {
                 .after(YarTypes.RETURN_KW).spaceIf(true)
                 .after(YarTypes.MATCH_KW).spaceIf(true)
                 .after(YarTypes.CASE_KW).spaceIf(true)
+                .after(YarTypes.TASKGROUP_KW).spaceIf(true)
+                .after(YarTypes.SPAWN_KW).spaceIf(true)
                 .after(YarTypes.VAR_KW).spaceIf(true)
                 .after(YarTypes.PACKAGE_KW).spaceIf(true)
                 .after(YarTypes.IMPORT_KW).spaceIf(true)
@@ -94,6 +96,7 @@ class YarFormattingModelBuilder : FormattingModelBuilder {
                 .after(YarTypes.FN_KW).spaceIf(true)
                 .after(YarTypes.OR_KW).spaceIf(true)
                 .after(YarTypes.MAP_KW).spaceIf(false)
+                .after(YarTypes.CHAN_KW).spaceIf(false)
 
                 // No space before/after dot
                 .before(YarTypes.DOT).spaceIf(false)

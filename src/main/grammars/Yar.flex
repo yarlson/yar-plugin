@@ -51,11 +51,14 @@ UNTERMINATED_CHAR='([^'\\\r\n]|\\[ntr0\\\\'])?
   "return"                { return RETURN_KW; }
   "match"                 { return MATCH_KW; }
   "case"                  { return CASE_KW; }
+  "taskgroup"             { return TASKGROUP_KW; }
+  "spawn"                 { return SPAWN_KW; }
   "true"                  { return TRUE_KW; }
   "false"                 { return FALSE_KW; }
   "nil"                   { return NIL_KW; }
   "error"                 { return ERROR_KW; }
   "map"                   { return MAP_KW; }
+  "chan"                  { return CHAN_KW; }
 
   // Multi-character operators (must come before single-char)
   ":="                    { return COLON_ASSIGN; }

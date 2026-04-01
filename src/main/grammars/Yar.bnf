@@ -32,11 +32,14 @@
     RETURN_KW='return'
     MATCH_KW='match'
     CASE_KW='case'
+    TASKGROUP_KW='taskgroup'
+    SPAWN_KW='spawn'
     TRUE_KW='true'
     FALSE_KW='false'
     NIL_KW='nil'
     ERROR_KW='error'
     MAP_KW='map'
+    CHAN_KW='chan'
 
     // Multi-character operators
     COLON_ASSIGN=':='
@@ -185,6 +188,7 @@ typeExpr ::= errorableType
            | sliceType
            | arrayType
            | mapType
+           | chanType
            | functionType
            | errorType
            | namedType
@@ -200,6 +204,8 @@ arrayType ::= '[' INTEGER_LITERAL ']' typeExpr {pin=1}
 sliceType ::= '[' ']' typeExpr
 
 mapType ::= 'map' '[' typeExpr ']' typeExpr {pin=1}
+
+chanType ::= 'chan' '[' typeExpr ']' {pin=1}
 
 functionType ::= 'fn' '(' typeList? ')' errorableMarker? typeExpr {pin=1}
 
@@ -227,13 +233,14 @@ statement ::= varDeclStmt
             | continueStmt
             | returnStmt
             | matchStmt
+            | spawnStmt
             | assignOrExprStmt
             {recoverWhile=stmtRecover}
 
 private stmtRecover ::= !('}' | 'var' | 'if' | 'for' | 'break' | 'continue' | 'return'
-                         | 'match' | IDENTIFIER | INTEGER_LITERAL | STRING_LITERAL | CHAR_LITERAL
+                         | 'match' | 'spawn' | IDENTIFIER | INTEGER_LITERAL | STRING_LITERAL | CHAR_LITERAL
                          | 'true' | 'false' | 'nil' | 'error' | 'fn' | '(' | '!' | '-'
-                         | '*' | '&' | '[' | 'map' | 'pub' | 'struct' | 'interface' | 'enum'
+                         | '*' | '&' | '[' | 'map' | 'chan' | 'taskgroup' | 'pub' | 'struct' | 'interface' | 'enum'
                          | <<eof>>)
 
 varDeclStmt ::= 'var' IDENTIFIER typeExpr ('=' expression)? {
@@ -273,6 +280,8 @@ matchStmt ::= 'match' expression '{' matchArm* matchElseArm? '}' {pin=1}
 matchArm ::= 'case' qualifiedName ('(' IDENTIFIER ')')? block {pin=1}
 
 matchElseArm ::= 'else' block {pin=1}
+
+spawnStmt ::= 'spawn' expression {pin=1}
 
 // Assignment or expression statement — disambiguated after parsing the LHS
 assignOrExprStmt ::= expression (('=' | '+=' | '-=' | '*=' | '/=' | '%=') expression)?
@@ -338,6 +347,7 @@ propagateOp ::= '?'
 
 primaryExpr ::= groupExpr
               | functionLiteralExpr
+              | taskgroupExpr
               | sliceLiteralExpr
               | arrayLiteralExpr
               | mapLiteralExpr
@@ -353,6 +363,8 @@ primaryExpr ::= groupExpr
 groupExpr ::= '(' expression ')' {pin=1}
 
 functionLiteralExpr ::= 'fn' '(' paramList? ')' errorableMarker? typeExpr block {pin=1}
+
+taskgroupExpr ::= 'taskgroup' typeExpr block {pin=1}
 
 arrayLiteralExpr ::= '[' INTEGER_LITERAL ']' typeExpr '{' expressionList? '}' {pin=1}
 

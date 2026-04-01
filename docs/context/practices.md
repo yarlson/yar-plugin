@@ -3,6 +3,7 @@
 ## Grammar and Code Generation
 
 - The BNF grammar (`src/main/grammars/Yar.bnf`) and JFlex lexer (`src/main/grammars/Yar.flex`) are the single source of truth for language syntax.
+- New Yar surface features such as `taskgroup`, `spawn`, and `chan[T]` should be added in the grammar and lexer first, then reflected in token sets, completion, docs, and parser fixtures.
 - Generated Java code goes to `src/main/gen/` and is excluded from version-controlled source sets (cleaned on `gradle clean`).
 - PSI element classes use Grammar-Kit's `mixin` and `implements` attributes to wire in `YarNamedElement` / `YarNamedElementImpl` for declarations that need naming/rename support.
 

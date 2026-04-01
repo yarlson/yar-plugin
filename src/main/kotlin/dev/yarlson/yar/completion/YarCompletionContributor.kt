@@ -39,7 +39,7 @@ class YarCompletionContributor : CompletionContributor() {
             private val KEYWORDS = listOf(
                 "package", "import", "fn", "pub", "var", "struct", "interface", "enum",
                 "if", "else", "for", "break", "continue", "return", "match", "case",
-                "true", "false", "nil", "error", "map", "or",
+                "taskgroup", "spawn", "true", "false", "nil", "error", "map", "chan", "or",
             )
         }
     }
@@ -92,6 +92,7 @@ class YarCompletionContributor : CompletionContributor() {
                 "str" to "string type",
                 "void" to "empty return type",
                 "noreturn" to "never returns",
+                "error" to "error type",
             )
 
             private val BUILTIN_FUNCTIONS = listOf(
@@ -106,6 +107,10 @@ class YarCompletionContributor : CompletionContributor() {
                 "sb_new" to "() i64",
                 "sb_write" to "(i64, str) void",
                 "sb_string" to "(i64) str",
+                "chan_new" to "[T](i32) chan[T]",
+                "chan_send" to "(chan[T], T) !void",
+                "chan_recv" to "(chan[T]) !T",
+                "chan_close" to "(chan[T]) void",
             )
 
             private val STDLIB_PACKAGES = listOf(
@@ -118,6 +123,7 @@ class YarCompletionContributor : CompletionContributor() {
                 "process" to "process execution",
                 "env" to "environment variables",
                 "stdio" to "stderr output",
+                "net" to "TCP networking",
                 "testing" to "test framework",
             )
         }

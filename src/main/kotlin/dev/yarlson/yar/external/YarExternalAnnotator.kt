@@ -124,18 +124,28 @@ class YarExternalAnnotator : ExternalAnnotator<YarExternalAnnotator.Info, List<Y
         }
 
         fun findYarExecutable(): String? {
-            // Check common locations
-            val candidates = listOf(
-                System.getenv("YAR_PATH"),
-                "/usr/local/bin/yar",
+            val pathExecutable = findYarExecutableOnPath()
+            val fallbackCandidates = listOf(
                 "/opt/homebrew/bin/yar",
+                "/usr/local/bin/yar",
                 "${System.getProperty("user.home")}/go/bin/yar",
                 "${System.getProperty("user.home")}/.local/bin/yar",
             )
+            return selectExecutable(
+                listOf(System.getenv("YAR_PATH"), pathExecutable) + fallbackCandidates
+            )
+        }
+
+        internal fun selectExecutable(candidates: List<String?>): String? {
             for (candidate in candidates) {
-                if (candidate != null && File(candidate).canExecute()) return candidate
+                if (candidate != null && File(candidate).canExecute()) {
+                    return candidate
+                }
             }
-            // Try PATH
+            return null
+        }
+
+        private fun findYarExecutableOnPath(): String? {
             return try {
                 val process = ProcessBuilder("which", "yar")
                     .redirectErrorStream(true)

@@ -116,6 +116,13 @@ class YarDocumentationProvider : AbstractDocumentationProvider() {
             "delete" to "<pre>fn delete(m map[K]V, key K) void</pre><p>Removes the entry with the given key from the map.</p>",
             "keys" to "<pre>fn keys(m map[K]V) []K</pre><p>Returns a slice of all keys in the map.</p>",
             "to_str" to "<pre>fn to_str(value) str</pre><p>Converts i32, i64, bool, str, or error to its string representation.</p>",
+            "sb_new" to "<pre>fn sb_new() i64</pre><p>Creates a string builder handle.</p>",
+            "sb_write" to "<pre>fn sb_write(handle i64, value str) void</pre><p>Appends a string to a string builder.</p>",
+            "sb_string" to "<pre>fn sb_string(handle i64) str</pre><p>Extracts the accumulated string and resets the builder.</p>",
+            "chan_new" to "<pre>fn chan_new[T](capacity i32) chan[T]</pre><p>Creates a bounded typed channel.</p>",
+            "chan_send" to "<pre>fn chan_send(ch chan[T], value T) !void</pre><p>Sends a value to a channel, returning <code>error.Closed</code> on a closed channel.</p>",
+            "chan_recv" to "<pre>fn chan_recv(ch chan[T]) !T</pre><p>Receives a value from a channel, returning <code>error.Closed</code> when the channel is closed and drained.</p>",
+            "chan_close" to "<pre>fn chan_close(ch chan[T]) void</pre><p>Closes a channel.</p>",
             // Stdlib packages
             "strings" to "<pre>package strings</pre><p>String manipulation functions: contains, has_prefix, has_suffix, index, count, repeat, replace, trim_left, trim_right, join, from_byte, parse_i64.</p>",
             "utf8" to "<pre>package utf8</pre><p>UTF-8 decoding and rune classification: decode, width, is_letter, is_digit, is_space.</p>",
@@ -126,6 +133,7 @@ class YarDocumentationProvider : AbstractDocumentationProvider() {
             "process" to "<pre>package process</pre><p>Process execution: args, run, run_inherit.</p>",
             "env" to "<pre>package env</pre><p>Environment variable access: lookup.</p>",
             "stdio" to "<pre>package stdio</pre><p>Stderr output: eprint.</p>",
+            "net" to "<pre>package net</pre><p>TCP networking: listen, accept, connect, read, write, close, and address helpers.</p>",
             "testing" to "<pre>package testing</pre><p>Test framework: T, equal, not_equal, is_true, is_false, fail.</p>",
             // Builtin types
             "bool" to "<pre>type bool</pre><p>Boolean type. Values: <code>true</code>, <code>false</code>.</p>",
@@ -135,6 +143,7 @@ class YarDocumentationProvider : AbstractDocumentationProvider() {
             "void" to "<pre>type void</pre><p>Empty return type for functions that return nothing.</p>",
             "noreturn" to "<pre>type noreturn</pre><p>Return type for functions that never return (e.g., panic).</p>",
             "error" to "<pre>type error</pre><p>Error type. Constructed as <code>error.Name</code>.</p>",
+            "chan" to "<pre>type chan[T]</pre><p>Bounded typed channel used for structured concurrency.</p>",
         )
     }
 }

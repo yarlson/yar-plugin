@@ -19,4 +19,5 @@ class YarParserTest : ParsingTestCase("parser", "yar", YarParserDefinition()) {
     fun testMaps() = doTest(true)
     fun testInterfaces() = doTest(true)
     fun testPointers() = doTest(true)
+    fun testConcurrency() = doTest(true)
 }

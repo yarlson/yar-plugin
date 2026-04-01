@@ -54,7 +54,8 @@ IntelliJ IDEA language support plugin for the [Yar](https://yarlson.dev) program
 ```bash
 git clone <repo-url>
 cd yar-plugin
-export JAVA_HOME=/path/to/jdk25+
+export JAVA_HOME="$(brew --prefix openjdk)"
+export PATH="$JAVA_HOME/bin:$PATH"
 ./gradlew buildPlugin
 ```
 
@@ -105,7 +106,7 @@ pub fn main() i32 {
 }
 ```
 
-Key language features: structs, interfaces, enums with payloads, generics, methods with receivers, pointers, slices, maps, closures, `match` expressions, error propagation (`?`) and handling (`or |err| {}`).
+Key language features: structs, interfaces, enums with payloads, generics, methods with receivers, pointers, slices, maps, channels, closures, `taskgroup` / `spawn`, `match` expressions, error propagation (`?`) and handling (`or |err| {}`).
 
 ## Development
 
